@@ -11,7 +11,7 @@ $(function() {
         App.cable.subscriptions.create(
             {
                 channel: "FriendChannel",
-                friend: 2
+                friend: friend_id
             },
             {
                 received: function(data) {

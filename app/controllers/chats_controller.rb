@@ -16,6 +16,7 @@ class ChatsController < ApplicationController
       @friend_id = Friend.find_friend_user_id(current_user.id,user_id.id)
       if @friend_id
         @messages = Message.where(:friend_id => @friend_id)
+        #FriendChannel.broadcast_to Friend.find(@friend_id), @message
       else
         flash[:alert] = "Currently you are not friend of #{@username}."
         redirect_to chat_index_path

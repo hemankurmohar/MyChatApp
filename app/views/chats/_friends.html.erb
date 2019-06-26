@@ -8,7 +8,7 @@
   <% if @friends_user_id.present? %>
     <nav class="nav flex-column">
       <% @friends_user_id.each do |friend| %>
-        <%= link_to @f_name_map[friend],"/chats/#{@f_uname_map[friend]}", class: "nav-link room-nav-link" %>
+        <%= link_to @f_name_map[friend], show_chat_path(username: @f_name_map[friend]), class: 'nav-link room-nav-link' %>
       <% end %>
     </nav>
   <% else %>

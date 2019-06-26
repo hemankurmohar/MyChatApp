@@ -20,7 +20,7 @@
               <div class="col">
                 <div class="message-content">
                   <p class="mb-1">
-                    <%= message.message %>
+                    <%=message.message %>
                   </p>
 
                   <div class="text-right">
@@ -37,13 +37,16 @@
     </div>
 
   <%= form_for @message, remote: true do |form| %>
+
     <div class="input-group mb-3">
-      <%= form.text_field :message, as: :string,
+      <p class="emoji-picker-container">
+      <%= form.text_field :message,
                      wrapper: false,
                      label: false,
                      input_html: {
                          class: 'chat-input'
-                     } %>
+                     } , data: { emojiable: true }%>
+      </p>
       <div class="input-group-append">
         <%= form.submit "Send", class: 'btn btn-primary chat-input' %>
       </div>
@@ -71,3 +74,5 @@
     </div>
   </div>
 </div>
+<script>
+</script>
