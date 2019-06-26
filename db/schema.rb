@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_25_173539) do
+ActiveRecord::Schema.define(version: 2019_06_26_181647) do
 
   create_table "friends", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_1_id"
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2019_06_25_173539) do
     t.index ["user_2_id"], name: "fk_rails_9a46a04f84"
   end
 
-  create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.bigint "friend_id"
     t.text "message"
     t.datetime "created_at", null: false
