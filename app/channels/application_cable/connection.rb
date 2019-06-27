@@ -3,9 +3,13 @@ module ApplicationCable
     identified_by :current_user
 
     def connect
+      p "onlnin onlnin onlnin onlnin onlnin onlnin onlnin onlnin onlnin "
       self.current_user = find_verified_user
     end
 
+    def disconnect
+      p "offlin offlin offlin offlin offlin offlin offlin offlin offlin offlin "
+    end
     private
 
     def find_verified_user

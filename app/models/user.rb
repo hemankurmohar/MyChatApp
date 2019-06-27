@@ -6,4 +6,8 @@ class User < ApplicationRecord
 
   validates :username, uniqueness: true, presence: true
   has_many :friends, foreign_key: :user_id_1
+
+  def offline
+    REDIS.srem("online", self.id)
+  end
 end
