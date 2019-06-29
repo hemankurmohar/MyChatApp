@@ -1,8 +1,7 @@
 $(function() {
     $('[data-channel-subscribe="friend"]').each(function(index, element) {
-
+        var current_user = "<%= @current_user%>";
         var $element = $(element),
-
             friend_id = $element.data('friend-id')
         messageTemplate = $('[data-role="message-template"]');
         imageTemplate =  $('[data-role="image-template"]');
@@ -31,9 +30,13 @@ $(function() {
                         $element.append(content);
                         $element.animate({ scrollTop: $element.prop("scrollHeight")}, 1000);
                     }else{
+                        var current_user = $('#current_user').val();
                         var content = messageTemplate.children().clone(true, true);
                         content.find('[data-role="message-text"]').text(data.message);
                         content.find('[data-role="message-date"]').text(data.updated_at);
+                        if(data.user_id==current_user){
+                            content.find('[data-role="message-content"]').attr("class","message-content1");
+                        }
                         $element.append(content);
                         $element.animate({ scrollTop: $element.prop("scrollHeight")}, 1000);
                     }

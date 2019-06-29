@@ -1,6 +1,8 @@
 
 <h1>
   <%= @username %>
+  <input name="current_user" type="hidden" value="<%= current_user.id %>" id="current_user"/>
+
 </h1>
 
 <div class="row">
@@ -76,7 +78,7 @@
   <div class="chat-message-container">
     <div class="row no-gutters">
       <div class="col">
-        <div class="message-content">
+        <div class="message-content" data-role="message-content">
           <p class="mb-1" data-role="message-text"></p>
 
           <div class="text-right">
@@ -114,8 +116,11 @@
         <div id="attachment">
           <form action="/messages/upload_attachment" id="media-dropzone" class="dropzone" enctype="multipart/form-data">
             <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>"/>
+            <input name="friend_id" type="hidden" value="<%= @friend_id %>"/>
             <div class="fallback">
+
               <input name="media" type="file" multiple/>
+
             </div>
           </form>
         </div>

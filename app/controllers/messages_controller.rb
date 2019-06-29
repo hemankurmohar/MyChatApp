@@ -70,10 +70,8 @@ class MessagesController < ApplicationController
 
   def upload_attachment
     @media = Message.new(file_name: params[:file])
-
-    @media.friend_id = 3
-    @friend = Friend.find(@media.friend_id)
-    @media.message="jmd"
+    @friend = Friend.find(params[:friend_id].to_i)
+    @media.friend_id = @friend.id
     @media.is_attachment = true
     @media.user_id = current_user.id
     if @media.save!
