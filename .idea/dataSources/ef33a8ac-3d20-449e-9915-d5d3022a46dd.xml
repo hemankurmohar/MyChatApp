@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dataSource name="@localhost">
+<dataSource name="@127.0.0.1">
   <database-model serializer="dbm" rdbms="MYSQL" format-version="4.8">
     <root id="1">
       <ServerVersion>5.7.22</ServerVersion>
@@ -1076,7 +1076,9 @@
     </collation>
     <table id="283" parent="56" name="ar_internal_metadata"/>
     <table id="284" parent="56" name="friends"/>
-    <table id="285" parent="56" name="messages"/>
+    <table id="285" parent="56" name="messages">
+      <Collation>utf8mb4_bin</Collation>
+    </table>
     <table id="286" parent="56" name="products"/>
     <table id="287" parent="56" name="schema_migrations"/>
     <table id="288" parent="56" name="users"/>
@@ -1305,35 +1307,41 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="329" parent="288" name="index_users_on_email">
+    <column id="329" parent="288" name="online">
+      <Position>10</Position>
+      <DataType>tinyint(1)|0s</DataType>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="330" parent="288" name="index_users_on_email">
       <ColNames>email</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="330" parent="288" name="index_users_on_reset_password_token">
+    <index id="331" parent="288" name="index_users_on_reset_password_token">
       <ColNames>reset_password_token</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="331" parent="288" name="index_users_on_username">
+    <index id="332" parent="288" name="index_users_on_username">
       <ColNames>username</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="332" parent="288" name="PRIMARY">
+    <key id="333" parent="288" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="333" parent="288" name="index_users_on_email">
+    <key id="334" parent="288" name="index_users_on_email">
       <ColNames>email</ColNames>
       <UnderlyingIndexName>index_users_on_email</UnderlyingIndexName>
     </key>
-    <key id="334" parent="288" name="index_users_on_reset_password_token">
+    <key id="335" parent="288" name="index_users_on_reset_password_token">
       <ColNames>reset_password_token</ColNames>
       <UnderlyingIndexName>index_users_on_reset_password_token</UnderlyingIndexName>
     </key>
-    <key id="335" parent="288" name="index_users_on_username">
+    <key id="336" parent="288" name="index_users_on_username">
       <ColNames>username</ColNames>
       <UnderlyingIndexName>index_users_on_username</UnderlyingIndexName>
     </key>

@@ -1,7 +1,10 @@
 class ChatsController < ApplicationController
   before_action :show_friends
-  def index
+  before_action :online_friends,:only=>[:index,:show]
 
+  def index
+    p "index index index index index"
+   #AppearanceChannel.broadcast_to
   end
 
   def chat_box
@@ -38,5 +41,9 @@ class ChatsController < ApplicationController
     @f_name_map = User.where(:id=>@friends_user_id).map{|x| [x.id,x.username]}.to_h
     @f_uname_map = User.where(:id=>@friends_user_id).map{|x| [x.id,x.username]}.to_h
 
+  end
+
+  def online_friends
+    @online_users = REDIS.zrange("online_users",0,REDIS.zcard("online_users")).collect{|x| x.to_i}
   end
 end

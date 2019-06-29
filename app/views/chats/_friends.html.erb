@@ -1,19 +1,23 @@
-<div class="col-12 col-md-3">
-  <div class="mb-3">
-    <%= link_to new_friend_path, class: "btn btn-primary" do %>
-      Make a new Friend
-    <% end %>
-  </div>
-
-  <% if @friends_user_id.present? %>
-    <nav class="nav flex-column">
-      <% @friends_user_id.each do |friend| %>
-        <%= link_to @f_name_map[friend], show_chat_path(username: @f_name_map[friend]), class: 'nav-link room-nav-link' %>
+  <div class="col-12 col-md-3">
+    <div class="mb-3">
+      <%= link_to new_friend_path, class: "btn btn-primary" do %>
+        Make a new Friend
       <% end %>
-    </nav>
-  <% else %>
-    <div class="text-muted">
-      You don't have any friends. Click on "Make a new Friend" and start a chat.
     </div>
-  <% end %>
+
+   <div>
+     <% if @friends_user_id.present? %>
+       <nav class="nav flex-column">
+         <% @friends_user_id.each do |friend| %>
+           <%= link_to @f_name_map[friend], show_chat_path(username: @f_name_map[friend]), class: 'nav-link room-nav-link' %>
+           <i id="status_<%= friend %>"><%= (@online_users.include?(friend))? "online" :"offline" %></i>
+         <% end %>
+       </nav>
+     <% else %>
+       <div class="text-muted">
+         You don't have any friends. Click on "Make a new Friend" and start a chat.
+       </div>
+     <% end %>
+   </div>
+
 </div>
