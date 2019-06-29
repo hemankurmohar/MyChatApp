@@ -16,5 +16,6 @@
 /*
  *= require_tree .
  *= require rails_emoji_picker
+ *= require dropzone/dropzone
  */
 @import "bootstrap";

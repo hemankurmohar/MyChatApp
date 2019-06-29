@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_29_110253) do
+ActiveRecord::Schema.define(version: 2019_06_29_164813) do
 
   create_table "friends", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_1_id"
@@ -22,12 +22,24 @@ ActiveRecord::Schema.define(version: 2019_06_29_110253) do
     t.index ["user_2_id"], name: "fk_rails_9a46a04f84"
   end
 
+  create_table "media", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "file_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.bigint "friend_id"
     t.text "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.boolean "is_attachment", default: false
+    t.string "attachment_file_name"
+    t.string "attachment_content_type"
+    t.integer "attachment_file_size"
+    t.datetime "attachment_updated_at"
+    t.string "file_name"
     t.index ["friend_id"], name: "index_messages_on_friend_id"
     t.index ["user_id"], name: "index_messages_on_user_id"
   end

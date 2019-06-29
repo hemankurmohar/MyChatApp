@@ -9,6 +9,9 @@ gem 'jquery-rails'
 gem "rename"
 gem 'gemoji'
 gem 'rails_emoji_picker'
+gem "paperclip", "~> 4.2"
+gem 'dropzonejs-rails'
+gem 'carrierwave'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.3'
 # Use mysql as the database for Active Record

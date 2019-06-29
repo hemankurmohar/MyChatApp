@@ -29,6 +29,7 @@ class MessagesController < ApplicationController
     @message.user_id = current_user.id
     respond_to do |format|
       if @message.save
+
         format.json { render :show, status: :created, location: @message }
         format.js {render :'messages/create'}
         FriendChannel.broadcast_to @friend, @message
@@ -52,9 +53,10 @@ class MessagesController < ApplicationController
       else
         format.html { render :edit }
         format.json { render json: @message.errors, status: :unprocessable_entity }
-      end
+      endrender :'messages/create'
     end
-  end
+    end
+    end
 
   # DELETE /messages/1
   # DELETE /messages/1.json
@@ -63,6 +65,25 @@ class MessagesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to messages_url, notice: 'Message was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def upload_attachment
+    @media = Message.new(file_name: params[:file])
+
+    @media.friend_id = 3
+    @friend = Friend.find(@media.friend_id)
+    @media.message="jmd"
+    @media.is_attachment = true
+    @media.user_id = current_user.id
+    if @media.save!
+      @media.update(:attachment_content_type=>@media.file_name.content_type)
+      respond_to do |format|
+        FriendChannel.broadcast_to @friend, @media
+        format.html {redirect_to "/chats/shubham"}
+        format.json{ render :json => @media }
+        format.js {render :'messages/upload_attachment'}
+      end
     end
   end
 
