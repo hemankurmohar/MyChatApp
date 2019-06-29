@@ -6,18 +6,30 @@
     </div>
 
    <div>
+     <ul class="list-group">
+
      <% if @friends_user_id.present? %>
-       <nav class="nav flex-column">
+
          <% @friends_user_id.each do |friend| %>
-           <%= link_to @f_name_map[friend], show_chat_path(username: @f_name_map[friend]), class: 'nav-link room-nav-link' %>
-           <i id="status_<%= friend %>"><%= (@online_users.include?(friend))? "online" :"offline" %></i>
+           <a href="<%= show_chat_path(username: @f_name_map[friend])%>" class="online_users_link" style="text-decoration: none;color: black">
+
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             <div class="col-auto text-center">
+               <img src="https://ptetutorials.com/images/user-profile.png" class="avatar" alt="">
+             </div>
+             <%= @f_name_map[friend] %>
+             <span class="badge badge-<%= (@online_users.include?(friend))? "success" :"light" %>" id="status_<%= friend %>"><%= (@online_users.include?(friend))? "Online" :"Offline" %></span>
+
+           </li>
+           </a>
          <% end %>
-       </nav>
+
      <% else %>
        <div class="text-muted">
          You don't have any friends. Click on "Make a new Friend" and start a chat.
        </div>
      <% end %>
+     </ul>
    </div>
 
 </div>

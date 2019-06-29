@@ -26,6 +26,7 @@ class MessagesController < ApplicationController
   def create
     @message = Message.new(message_params)
     @friend = Friend.find(@message.friend_id)
+    @message.user_id = current_user.id
     respond_to do |format|
       if @message.save
         format.json { render :show, status: :created, location: @message }

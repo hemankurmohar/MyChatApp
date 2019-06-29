@@ -14,9 +14,6 @@ class User < ApplicationRecord
 
   def online
     REDIS.zadd("online_users",1,self.id)
-    # total_online_users = REDIS.zcard("online_users")
-    # users = REDIS.zrange("online_users",0,total_online_users)
-    # users = [1,5]
-     ActionCable.server.broadcast "appearance_channel",{:id => self.id,:status=> true}
+    ActionCable.server.broadcast "appearance_channel",{:id => self.id,:status=> true}
   end
 end
