@@ -9,7 +9,7 @@
 
     <%= render partial: 'friends' %>
 
-
+    <%map = {1=>"😊",2=>"😐",3=>"😒"} %>
     <div class="col">
       <div class="box">
         <div class="chat" data-channel-subscribe="friend" data-friend-id="<%= @friend_id %>">
@@ -31,9 +31,11 @@
                             <%= message.message %>
                           </p>
                            <div class="text-right">
-                             <small>
-                               <%= message.created_at.localtime.to_formatted_s(:short)%>
-                             </small>
+
+
+                             <span data-role="sentiment"> <%=map[message.sentiment]%></span> | <small><i data-role="message-date"><%= message.created_at.localtime.to_formatted_s(:short)%></i></small>
+
+
                            </div>
                         <%end %>
 
@@ -82,7 +84,8 @@
           <p class="mb-1" data-role="message-text"></p>
 
           <div class="text-right">
-            <small data-role="message-date"></small>
+            <span data-role="sentiment"> </span> | <small><i data-role="message-date"></i></small>
+
           </div>
         </div>
       </div>

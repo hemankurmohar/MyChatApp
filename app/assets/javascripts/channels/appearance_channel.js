@@ -13,8 +13,11 @@ $(function() {
 
                     if(data.status){
                         $(id).text("online");
+                        $(id).attr("class"," badge badge-success");
+
                     }else{
                         $(id).text("offline");
+                        $(id).attr("class"," badge badge-light");
                     }
                 }
             }

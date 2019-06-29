@@ -27,6 +27,9 @@ class MessagesController < ApplicationController
     @message = Message.new(message_params)
     @friend = Friend.find(@message.friend_id)
     @message.user_id = current_user.id
+    if !@message.message.nil?
+     @message.sentiment = Aylien.check(@message.message)
+    end
     respond_to do |format|
       if @message.save
 

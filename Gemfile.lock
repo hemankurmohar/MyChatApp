@@ -49,6 +49,7 @@ GEM
     arel (9.0.0)
     autoprefixer-rails (9.6.0)
       execjs
+    aylien_text_api (1.0.0)
     bcrypt (3.1.13)
     bindex (0.7.0)
     bootsnap (1.4.4)
@@ -252,6 +253,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aylien_text_api
   bootsnap (>= 1.1.0)
   bootstrap (~> 4.3.1)
   byebug

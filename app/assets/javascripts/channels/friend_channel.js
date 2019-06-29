@@ -37,6 +37,8 @@ $(function() {
                         if(data.user_id==current_user){
                             content.find('[data-role="message-content"]').attr("class","message-content1");
                         }
+                        map = {"1":"😊","2": "😐","3":"😒"}
+                        content.find('[data-role="sentiment"]').text(map[data.sentiment]);
                         $element.append(content);
                         $element.animate({ scrollTop: $element.prop("scrollHeight")}, 1000);
                     }
