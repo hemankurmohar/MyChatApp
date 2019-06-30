@@ -7,5 +7,8 @@ Rails.application.routes.draw do
   get "/chats",to: 'chats#index',as: :chat_index
   get "/chats/:username",to: 'chats#show',as: :show_chat
   post "/messages/upload_attachment",to: 'messages#upload_attachment',as: :upload_attachment
+  get "/friends/add/(:user_id)",to: 'friends#add',as: :add_friend
+  get "/friends/approve/(:user_id)",to: 'friends#approve',as: :approve_friend
+
   root controller: :chats, action: :index
 end

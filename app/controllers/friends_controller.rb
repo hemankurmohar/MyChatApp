@@ -4,7 +4,8 @@ class FriendsController < ApplicationController
   # GET /friends
   # GET /friends.json
   def index
-    @friends = Friend.all
+    @users = User.where.not(:id=>current_user)
+
   end
 
   # GET /friends/1
@@ -61,6 +62,26 @@ class FriendsController < ApplicationController
     end
   end
 
+  def add
+    if Friend.find_friend_user_id(current_user.id,params[:user_id].to_i).nil?
+      Friend.create(:user_1_id=>current_user.id,:user_2_id=>params[:user_id].to_i)
+      flash[:notice]="Friend Request has been sent."
+    else
+      flash[:alert]="Friend Request has already been raised."
+    end
+    redirect_to "/friends"
+  end
+
+  def approve
+    friend = Friend.find_friend_user_id(current_user.id,params[:user_id].to_i)
+    if !friend.nil?
+      Friend.find(friend).update(:approved=>true)
+      flash[:notice]="You are friends now.."
+    else
+      flash[:alert]="Error."
+    end
+    redirect_to "/friends"
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_friend

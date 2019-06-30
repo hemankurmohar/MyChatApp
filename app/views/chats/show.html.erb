@@ -1,16 +1,19 @@
 
-<h1>
-  <%= @username %>
-  <input name="current_user" type="hidden" value="<%= current_user.id %>" id="current_user"/>
 
-</h1>
-
+<input name="current_user" type="hidden" value="<%= current_user.id %>" id="current_user"/>
 <div class="row">
 
     <%= render partial: 'friends' %>
 
     <%map = {1=>"👍",2=>"😊",3=>"😡"} %>
     <div class="col">
+      <div class="header_box">
+       <br>
+        <h1 class="text-center">
+          <%= @user.full_name %>
+        </h1>
+      </div>
+
       <div class="box">
         <div class="chat" data-channel-subscribe="friend" data-friend-id="<%= @friend_id %>">
           <% @messages.each do |message| %>

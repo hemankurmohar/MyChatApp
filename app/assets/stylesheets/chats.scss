@@ -8,7 +8,7 @@
   vertical-align:middle;
 }
 $primary: #d4d4d4;
-$secondary: #d4d4d4;
+$secondary: #b3b3b3;
 .room-nav-link {
   border: 1px solid lighten($primary, 40%);
   background: lighten($primary, 45%);
@@ -16,6 +16,16 @@ $secondary: #d4d4d4;
   & + .room-nav-link {
     border-top: 0 none;
   }
+}
+.header_box{
+
+  background: #343a40!important;
+
+  opacity: 50%;
+  height: 10vh;
+  width: 100vh;
+  border-radius: 5px 5px 0 0;
+  color: white;
 }
 .box{
   border: 1px solid lighten($secondary, 40%);
