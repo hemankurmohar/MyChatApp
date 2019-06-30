@@ -9,7 +9,7 @@ gem 'jquery-rails'
 gem "rename"
 gem 'gemoji'
 gem 'rails_emoji_picker'
-gem "paperclip", "~> 4.2"
+#gem "paperclip", "~> 4.2"
 gem 'dropzonejs-rails'
 gem 'carrierwave'
 gem 'aylien_text_api'
