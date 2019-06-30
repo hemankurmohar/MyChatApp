@@ -1,6 +1,6 @@
 class MessagesController < ApplicationController
   before_action :set_message, only: [:show, :edit, :update, :destroy]
-
+  after_action :broadcast_data, only: [:create,:upload_attachment]
   # GET /messages
   # GET /messages.json
   def index
@@ -28,14 +28,19 @@ class MessagesController < ApplicationController
     @friend = Friend.find(@message.friend_id)
     @message.user_id = current_user.id
     if !@message.message.nil?
-     @message.sentiment = Aylien.check(@message.message)
+     #@message.sentiment = Aylien.check(@message.message)
     end
     respond_to do |format|
       if @message.save
-
+        @hide_user_id = @friend.partner_id(current_user.id)
+        #messages = Message.where(:friend_id=>@friend.id,:read=>false,:user_id=>@message.partner_id)
+        #messages.update(:read=>true)
         format.json { render :show, status: :created, location: @message }
         format.js {render :'messages/create'}
-        FriendChannel.broadcast_to @friend, @message
+        # FriendChannel.broadcast_to @friend, @message
+        # user = (@friend.user_1_id==current_user.id)? User.find(@friend.user_2_id) : User.find(@friend.user_1_id)
+        # @hide_user_id = user.id
+        # AppearanceChannel.broadcast_to user,{user_id: current_user.id,notification_count: Message.where(:friend_id=>@friend.id,:read=>false,:user_id=>current_user.id).count}
 
       else
         format.html { render :new }
@@ -72,17 +77,19 @@ class MessagesController < ApplicationController
   end
 
   def upload_attachment
-    @media = Message.new(file_name: params[:file])
+    @message = Message.new(file_name: params[:file])
     @friend = Friend.find(params[:friend_id].to_i)
-    @media.friend_id = @friend.id
-    @media.is_attachment = true
-    @media.user_id = current_user.id
-    if @media.save!
-      @media.update(:attachment_content_type=>@media.file_name.content_type)
+    @message.friend_id = @friend.id
+    @message.is_attachment = true
+    @message.user_id = current_user.id
+    if @message.save!
+      @hide_user_id = @friend.partner_id(current_user.id)
+      @message.update(:attachment_content_type=>@message.file_name.content_type)
       respond_to do |format|
-        FriendChannel.broadcast_to @friend, @media
+        #FriendChannel.broadcast_to @friend, @message
+       # AppearanceChannel.broadcast_to user,{user_id: current_user.id,notification_count: Message.where(:friend_id=>@friend.id,:read=>false,:user_id=>current_user.id).count}
         format.html {redirect_to "/chats/shubham"}
-        format.json{ render :json => @media }
+        format.json{ render :json => @message }
         format.js {render :'messages/upload_attachment'}
       end
     end
@@ -98,4 +105,12 @@ class MessagesController < ApplicationController
     def message_params
       params.require(:message).permit(:friend_id, :message)
     end
+
+   def broadcast_data
+     messages = Message.where(:friend_id=>@friend.id,:read=>false,:user_id=>@message.partner_id)
+     messages.update(:read=>true)
+     FriendChannel.broadcast_to @friend, @message
+     user = (@friend.user_1_id==current_user.id)? User.find(@friend.user_2_id) : User.find(@friend.user_1_id)
+     AppearanceChannel.broadcast_to user,{user_id: current_user.id,notification_count: Message.where(:friend_id=>@friend.id,:read=>false,:user_id=>current_user.id).count}
+   end
 end

@@ -55,6 +55,7 @@ $secondary: #d4d4d4;
     border-radius: 5px;
     background: lighten($primary, 10%);
     color: black;
+    margin-right: 1%;
 
   }
 
@@ -72,6 +73,19 @@ $secondary: #d4d4d4;
   }
 
   .message-content_img {
+    display: inline-block;
+    text-align: justify;
+    word-break:break-all;
+    padding: 5px;
+    border: 1px solid $primary;
+    border-radius: 5px;
+    background: #d4d4d4;
+    color: black;
+    float: left;
+    width: 50%;
+  }
+
+  .message-content_img1 {
     display: inline-block;
     text-align: justify;
     word-break:break-all;

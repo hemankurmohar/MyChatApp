@@ -9,7 +9,7 @@
 
     <%= render partial: 'friends' %>
 
-    <%map = {1=>"😊",2=>"😐",3=>"😒"} %>
+    <%map = {1=>"👍",2=>"😊",3=>"😡"} %>
     <div class="col">
       <div class="box">
         <div class="chat" data-channel-subscribe="friend" data-friend-id="<%= @friend_id %>">
@@ -19,20 +19,18 @@
                 <div class="col">
                       <%if message.is_attachment and message.file_name.content_type.include?("image")%>
                         <div >
-                        <%= image_tag message.file_name.url,class: "message-content_img"%>
+                        <%= image_tag message.file_name.url,class: (message.user_id == current_user.id) ? "message-content_img1" : "message-content_img"%>
 
                         <%elsif message.is_attachment %>
                           <div>
                             <a href="<%= message.file_name.url%>" target="_blank">
-                            <%= image_tag "/download-logo.png",class: "message-content_img"%></a>
+                            <%= image_tag "/download-logo.png",class: (message.user_id == current_user.id) ? "message-content_img1" : "message-content_img"%></a>
                         <%else %>
                          <div class="<%= (message.user_id == current_user.id) ? "message-content1" : "message-content" %>">
                           <p class="mb-1">
                             <%= message.message %>
                           </p>
                            <div class="text-right">
-
-
                              <span data-role="sentiment"> <%=map[message.sentiment]%></span> | <small><i data-role="message-date"><%= message.created_at.localtime.to_formatted_s(:short)%></i></small>
 
 
@@ -102,7 +100,7 @@
         </div>
           <div data-role="other_attachment_container">
             <a data-role="other" href="" target="_blank">
-              <%= image_tag "/download-logo.png", class: "message-content_img" %></a>
+              <%= image_tag "/download-logo.png","data-role":  "other_img", class: "message-content_img" %></a>
           </div>
 
         </div>

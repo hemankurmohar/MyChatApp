@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_29_221013) do
+ActiveRecord::Schema.define(version: 2019_06_30_065439) do
 
   create_table "friends", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_1_id"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 2019_06_29_221013) do
     t.datetime "attachment_updated_at"
     t.string "file_name"
     t.integer "sentiment"
+    t.boolean "read", default: false
     t.index ["friend_id"], name: "index_messages_on_friend_id"
     t.index ["user_id"], name: "index_messages_on_user_id"
   end

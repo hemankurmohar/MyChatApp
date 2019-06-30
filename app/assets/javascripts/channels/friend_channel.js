@@ -1,5 +1,6 @@
 $(function() {
     $('[data-channel-subscribe="friend"]').each(function(index, element) {
+        var current_user = $('#current_user').val();
         var $element = $(element),
             friend_id = $element.data('friend-id')
         messageTemplate = $('[data-role="message-template"]');
@@ -18,7 +19,11 @@ $(function() {
                             $('#myModal').modal('toggle');
                         }
                         var content = imageTemplate.children().clone(true, true);
+                        if(data.user_id == current_user){
+                            content.find('[data-role="other_img"]').attr("class","message-content_img1");
+                            content.find('[data-role="image"]').attr("class","message-content_img1");
 
+                        }
                         if(data.attachment_content_type.includes("image")==false){
                              content.find('[data-role="other"]').attr("href",data.file_name.url);
                             content.find('[data-role="image"]').remove();
@@ -29,7 +34,7 @@ $(function() {
                         $element.append(content);
                         $element.animate({ scrollTop: $element.prop("scrollHeight")}, 1000);
                     }else{
-                        var current_user = $('#current_user').val();
+
                         var content = messageTemplate.children().clone(true, true);
                         content.find('[data-role="message-text"]').text(data.message);
                         var date = new Date(data.created_at);
@@ -37,7 +42,7 @@ $(function() {
                         if(data.user_id==current_user){
                             content.find('[data-role="message-content"]').attr("class","message-content1");
                         }
-                        map = {"1":"😊","2": "😐","3":"😒"}
+                        map = {"1":"👍","2": "😊","3":"😡"}
                         content.find('[data-role="sentiment"]').text(map[data.sentiment]);
                         $element.append(content);
                         $element.animate({ scrollTop: $element.prop("scrollHeight")}, 1000);
