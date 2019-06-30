@@ -1,24 +1,29 @@
-# README
+# WebChatApp
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a real time chat application.
 
-Things you may want to cover:
+Features :
 
-* Ruby version
+* Real Time Chatting
 
-* System dependencies
+* Send Emoji with text
 
-* Configuration
+* Detect Sentiment based on the text
 
-* Database creation
+* Shows notification on new messsage
 
-* Database initialization
+* Can send friend request to another user
 
-* How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
+Milestone:
 
-* Deployment instructions
+* Integrate Video and Audio Calling capabilty
 
-* ...
+* Integrate Load Balancing Technique for Action Cable
+
+* Archive historic chats
+
+* Compress the size of attachments
+
+* In-box media play feature.
+
