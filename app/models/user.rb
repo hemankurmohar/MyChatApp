@@ -7,7 +7,7 @@ class User < ApplicationRecord
   validates :username, uniqueness: true, presence: true
   has_many :friends, foreign_key: :user_id_1
 
-  mount_uploader :avtar, MediaUploader
+  mount_uploader :avtar, AvtarUploader
 
   def offline
     REDIS.zrem("online_users",self.id)

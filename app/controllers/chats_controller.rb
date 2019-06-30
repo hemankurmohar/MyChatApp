@@ -1,5 +1,5 @@
 class ChatsController < ApplicationController
-  before_action :show_friends
+  before_action :show_friends,:except => [:profile_pic,:show_attachment]
   before_action :online_friends,:only=>[:index,:show]
   self.layout "chat"
   def index
@@ -28,6 +28,30 @@ class ChatsController < ApplicationController
 
   end
 
+  def profile_pic
+     user = User.find(params[:user_id])
+     if !user.avtar.path.nil?
+       file_path = current_user.avtar.path
+       send_file(file_path,:disposition=>"inline")
+     else
+        send_file("#{Rails.root}/public/user-profile.png",:disposition=>"inline")
+     end
+  end
+
+  def show_attachment
+    message = Message.find(params[:message_id])
+    if message
+      friend = Friend.find(message.friend_id)
+      if (friend.user_1_id==current_user.id or friend.user_2_id==current_user.id) and message.is_attachment
+        send_file(message.file_name.path,:disposition=>"inline")
+      else
+        send_file("#{Rails.root}/public/danger.png",:disposition=>"inline")
+      end
+    else
+      send_file("#{Rails.root}/public/danger.png",:disposition=>"inline")
+    end
+
+  end
   private
   def show_friends
     friends = Friend.where("(user_1_id=? or user_2_id=?) and approved=1",current_user,current_user)
