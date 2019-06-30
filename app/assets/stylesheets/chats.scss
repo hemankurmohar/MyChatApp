@@ -7,8 +7,8 @@
   width:auto;
   vertical-align:middle;
 }
-$primary: #0000FF;
-$secondary: #0000AF;
+$primary: #d4d4d4;
+$secondary: #b3b3b3;
 .room-nav-link {
   border: 1px solid lighten($primary, 40%);
   background: lighten($primary, 45%);
@@ -17,35 +17,105 @@ $secondary: #0000AF;
     border-top: 0 none;
   }
 }
+.header_box{
+
+  background: #343a40!important;
+
+  opacity: 50%;
+  height: 10vh;
+  width: 100vh;
+  border-radius: 5px 5px 0 0;
+  color: white;
+}
+.box{
+  border: 1px solid lighten($secondary, 40%);
+  background: lighten($secondary, 50%);
+  height: 64vh;
+  width: 100vh;
+  border-radius: 5px 5px 0 0;
+
+}
 .chat {
   border: 1px solid lighten($secondary, 40%);
   background: lighten($secondary, 50%);
-  height: 50vh;
+  height: 55vh;
+  width: 100vh;
   border-radius: 5px 5px 0 0;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 .chat-input {
   border-top: 0 none;
   border-radius: 0 0 5px 5px;
+  background: white;
 }
 .chat-message-container {
   padding: 5px;
-
+  overflow-y: paged-y;
   .avatar {
     margin: 5px;
   }
 
   .message-content {
+    display: inline-block;
+    text-align: justify;
+    word-break:break-all;
     padding: 5px;
     border: 1px solid $primary;
     border-radius: 5px;
     background: lighten($primary, 10%);
-    color: white;
+    color: black;
+    margin-right: 1%;
+
+  }
+
+  .message-content1 {
+    display: inline-block;
+    text-align: justify;
+    word-break:break-all;
+    padding: 5px;
+    border: 1px solid $primary;
+    border-radius: 5px;
+    background: greenyellow;
+    color: black;
+    float: right;
+    margin-right: 1%;
+  }
+
+  .message-content_img {
+    display: inline-block;
+    text-align: justify;
+    word-break:break-all;
+    padding: 5px;
+    border: 1px solid $primary;
+    border-radius: 5px;
+    background: #d4d4d4;
+    color: black;
+    float: left;
+    width: 50%;
+  }
+
+  .message-content_img1 {
+    display: inline-block;
+    text-align: justify;
+    word-break:break-all;
+    padding: 5px;
+    border: 1px solid $primary;
+    border-radius: 5px;
+    background: greenyellow;
+    color: black;
+    float: right;
+    margin-right: 1%;
+    width: 50%;
   }
 
   & + .chat-message-container {
     margin-top: 10px;
   }
 }
+
+.online_users_link{
+ text-decoration: none;
+}
+
 @import 'rails_emoji_picker';

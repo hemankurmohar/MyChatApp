@@ -1,0 +1,106 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href=" https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src=" https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+
+</head>
+<body>
+<select id="city_list" onchange="change_city();">
+    <option value="-1">-- Please select -- </option>
+    <option value="MUMBAI">MUMBAI</option>
+    <option value="BENGALURU">BENGALURU</option>
+    <option value="CHENNAI">CHENNAI</option>
+    <option value="DELHI">DELHI</option>
+    <option value="KOLKATA">KOLKATA</option>
+</select>
+<br>
+<br>
+<hr>
+<img id="loader_img" src="loader.gif" style="margin-left: 40%;margin-top: 10%"/>
+<table id="data_table" class="table table-striped table-bordered" style="width:100%">
+    <thead>
+    <tr>
+        <th>Bank ID</th>
+        <th>IFSC</th>
+        <th>Branch</th>
+        <th>Bank Name</th>
+        <th>City</th>
+        <th>District</th>
+        <th>State</th>
+        <th>Address</th>
+    </tr>
+    </thead>
+    <tbody id="table_body">
+
+    </tbody>
+</table>
+</body>
+<script>
+    $(document).ready(function(){
+        $('#data_table').hide();
+        $('#loader_img').hide();
+
+    });
+    function change_city(){
+        let value = $('#city_list').val();
+        var rows="";
+        if(value=="-1"){
+            $('#data_table').hide();
+            alert("Please select any city.");
+        }else{
+            $('#data_table').hide();
+            $('#loader_img').show();
+            $.ajax({
+                type: "GET",
+                url: "https://vast-shore-74260.herokuapp.com/banks",
+                data: {
+                    city: value
+                },
+                cache: true,
+                success:  function(data) {
+                    let size = data.length;
+                    for(i=0;i<size;i++){
+                        rows+="<tr><td>"+data[i].bank_id+"</td>" +
+                            "<td>"+data[i].ifsc+"</td>"+
+                            "<td>"+data[i].branch+"</td>"+
+                            "<td>"+data[i].bank_name+"</td>"+
+                            "<td>"+data[i].city+"</td>"+
+                            "<td>"+data[i].district+"</td>"+
+                            "<td>"+data[i].state+"</td>"+
+                            "<td>"+data[i].address+"</td></tr>"
+                    }
+                    document.getElementById("table_body").innerHTML=rows;
+                    $('#data_table').DataTable();
+                    $('#data_table').show();
+                    $('#loader_img').hide();
+                }
+            });
+            // $.get(
+            //     "https://vast-shore-74260.herokuapp.com/banks",
+            //     {city: value},
+            //     function(data) {
+            //        let size = data.length;
+            //        for(i=0;i<size;i++){
+            //            rows+="<tr><td>"+data[i].bank_id+"</td>" +
+            //                "<td>"+data[i].ifsc+"</td>"+
+            //                "<td>"+data[i].branch+"</td>"+
+            //                "<td>"+data[i].bank_name+"</td>"+
+            //                "<td>"+data[i].city+"</td>"+
+            //                "<td>"+data[i].district+"</td>"+
+            //                "<td>"+data[i].state+"</td>"+
+            //                "<td>"+data[i].address+"</td></tr>"
+            //         }
+            //         document.getElementById("table_body").innerHTML=rows;
+            //         $('#data_table').DataTable();
+            //         $('#data_table').show();
+            //         $('#loader_img').hide();
+            //     }
+            // ),cache = true;
+        }
+    }
+</script>
+</html>

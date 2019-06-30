@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_26_181647) do
+ActiveRecord::Schema.define(version: 2019_06_30_092101) do
 
   create_table "friends", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_1_id"
@@ -18,8 +18,15 @@ ActiveRecord::Schema.define(version: 2019_06_26_181647) do
     t.boolean "block"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "approved", default: false
     t.index ["user_1_id"], name: "fk_rails_676dcb5b3a"
     t.index ["user_2_id"], name: "fk_rails_9a46a04f84"
+  end
+
+  create_table "media", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "file_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -27,7 +34,17 @@ ActiveRecord::Schema.define(version: 2019_06_26_181647) do
     t.text "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.boolean "is_attachment", default: false
+    t.string "attachment_file_name"
+    t.string "attachment_content_type"
+    t.integer "attachment_file_size"
+    t.datetime "attachment_updated_at"
+    t.string "file_name"
+    t.integer "sentiment"
+    t.boolean "read", default: false
     t.index ["friend_id"], name: "index_messages_on_friend_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "products", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -45,6 +62,10 @@ ActiveRecord::Schema.define(version: 2019_06_26_181647) do
     t.string "username", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "online", default: false
+    t.string "full_name"
+    t.text "bio"
+    t.string "avtar"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true

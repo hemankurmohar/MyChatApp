@@ -12,4 +12,9 @@ class Friend < ApplicationRecord
     end
     return nil
   end
+
+
+  def partner_id(user_id)
+   return (self.user_1_id==user_id)? self.user_2_id : self.user_1_id
+  end
 end

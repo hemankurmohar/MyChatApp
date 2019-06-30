@@ -1,78 +1,139 @@
 
-<h1>
-  <%= @username %>
-</h1>
 
+<input name="current_user" type="hidden" value="<%= current_user.id %>" id="current_user"/>
 <div class="row">
 
     <%= render partial: 'friends' %>
 
-
+    <%map = {1=>"👍",2=>"😊",3=>"😡"} %>
     <div class="col">
-      <div class="chat" data-channel-subscribe="friend" data-friend-id="<%= @friend_id %>">
-        <% @messages.each do |message| %>
-          <div class="chat-message-container">
-            <div class="row no-gutters">
-              <div class="col-auto text-center">
-                <img src="<%#= gravatar_url(room_message.user) %>" class="avatar" alt="">
-              </div>
+      <div class="header_box">
+       <br>
+        <h1 class="text-center">
+          <%= @user.full_name %>
+        </h1>
+      </div>
 
-              <div class="col">
-                <div class="message-content">
-                  <p class="mb-1">
-                    <%=message.message %>
-                  </p>
+      <div class="box">
+        <div class="chat" data-channel-subscribe="friend" data-friend-id="<%= @friend_id %>">
+          <% @messages.each do |message| %>
+            <div class="chat-message-container">
+              <div class="row no-gutters">
+                <div class="col">
+                      <%if message.is_attachment and message.file_name.content_type.include?("image")%>
+                        <div >
+                        <%= image_tag message.file_name.url,class: (message.user_id == current_user.id) ? "message-content_img1" : "message-content_img"%>
 
-                  <div class="text-right">
-                    <small>
-                      <%= message.created_at %>
-                    </small>
+                        <%elsif message.is_attachment %>
+                          <div>
+                            <a href="<%= message.file_name.url%>" target="_blank">
+                            <%= image_tag "/download-logo.png",class: (message.user_id == current_user.id) ? "message-content_img1" : "message-content_img"%></a>
+                        <%else %>
+                         <div class="<%= (message.user_id == current_user.id) ? "message-content1" : "message-content" %>">
+                          <p class="mb-1">
+                            <%= message.message %>
+                          </p>
+                           <div class="text-right">
+                             <span data-role="sentiment"> <%=map[message.sentiment]%></span> | <small><i data-role="message-date"><%= message.created_at.localtime.to_formatted_s(:short)%></i></small>
+
+
+                           </div>
+                        <%end %>
+
                   </div>
                 </div>
               </div>
             </div>
+
+          <% end %>
+
+        </div>
+        <%= form_for @message, remote: true do |form| %>
+          <div class="input-group mb-3" style="width:495px">
+            <div class="input-group-append">
+            <p class="emoji-picker-container" style="width: 82vh">
+              <%= form.text_field :message,
+                                  input_html: {
+                                      class: 'chat-input'
+                                  }, data: {emojiable: true} %>
+
+
+            </p>
+              &nbsp;&nbsp;
+              <%= form.submit "Send", class: 'btn btn-primary btn-xs chat-input' %>
+              &nbsp;&nbsp;
+              <button type="button" class="btn  btn-lg" data-toggle="modal" data-target="#myModal">
+                <img src="/attachment_logo.png" style="height: 50px;width:30px"></button>
+            </div>
           </div>
+
+          <%= form.hidden_field :friend_id, :value => @friend_id %>
         <% end %>
       </div>
+
+
     </div>
 
-  <%= form_for @message, remote: true do |form| %>
 
-    <div class="input-group mb-3">
-      <p class="emoji-picker-container">
-      <%= form.text_field :message,
-                     wrapper: false,
-                     label: false,
-                     input_html: {
-                         class: 'chat-input'
-                     } , data: { emojiable: true }%>
-      </p>
-      <div class="input-group-append">
-        <%= form.submit "Send", class: 'btn btn-primary chat-input' %>
-      </div>
-    </div>
 
-    <%= form.hidden_field :friend_id,:value=> @friend_id%>
-  <% end %>
   </div>
 <div class="d-none" data-role="message-template">
   <div class="chat-message-container">
     <div class="row no-gutters">
-      <div class="col-auto text-center">
-        <img src="" class="avatar" alt="" data-role="user-avatar">
-      </div>
-
       <div class="col">
-        <div class="message-content">
+        <div class="message-content" data-role="message-content">
           <p class="mb-1" data-role="message-text"></p>
 
           <div class="text-right">
-            <small data-role="message-date"></small>
+            <span data-role="sentiment"> </span> | <small><i data-role="message-date"></i></small>
+
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<script>
-</script>
+  <div class="d-none" data-role="image-template">
+    <div class="chat-message-container">
+      <div class="row no-gutters">
+
+        <div class="col">
+          <div data-role="image_attachment_container">
+            <img data-role="image" class="message-content_img" src="">
+        </div>
+          <div data-role="other_attachment_container">
+            <a data-role="other" href="" target="_blank">
+              <%= image_tag "/download-logo.png","data-role":  "other_img", class: "message-content_img" %></a>
+          </div>
+
+        </div>
+    </div>
+  </div>
+  </div>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        <div id="attachment">
+          <form action="/messages/upload_attachment" id="media-dropzone" class="dropzone" enctype="multipart/form-data">
+            <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>"/>
+            <input name="friend_id" type="hidden" value="<%= @friend_id %>"/>
+            <div class="fallback">
+
+              <input name="media" type="file" multiple/>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+  <script>
+
+  </script>

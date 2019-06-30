@@ -1,6 +1,6 @@
 class MessagesController < ApplicationController
   before_action :set_message, only: [:show, :edit, :update, :destroy]
-
+  after_action :broadcast_data, only: [:create,:upload_attachment]
   # GET /messages
   # GET /messages.json
   def index
@@ -26,12 +26,15 @@ class MessagesController < ApplicationController
   def create
     @message = Message.new(message_params)
     @friend = Friend.find(@message.friend_id)
+    @message.user_id = current_user.id
+    if !@message.message.nil?
+     @message.sentiment = Aylien.check(@message.message)
+    end
     respond_to do |format|
       if @message.save
+        @hide_user_id = @friend.partner_id(current_user.id)
         format.json { render :show, status: :created, location: @message }
         format.js {render :'messages/create'}
-        FriendChannel.broadcast_to @friend, @message
-
       else
         format.html { render :new }
         format.json { render json: @message.errors, status: :unprocessable_entity }
@@ -51,9 +54,10 @@ class MessagesController < ApplicationController
       else
         format.html { render :edit }
         format.json { render json: @message.errors, status: :unprocessable_entity }
-      end
+      endrender :'messages/create'
     end
-  end
+    end
+    end
 
   # DELETE /messages/1
   # DELETE /messages/1.json
@@ -62,6 +66,23 @@ class MessagesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to messages_url, notice: 'Message was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def upload_attachment
+    @message = Message.new(file_name: params[:file])
+    @friend = Friend.find(params[:friend_id].to_i)
+    @message.friend_id = @friend.id
+    @message.is_attachment = true
+    @message.user_id = current_user.id
+    if @message.save!
+      @hide_user_id = @friend.partner_id(current_user.id)
+      @message.update(:attachment_content_type=>@message.file_name.content_type)
+      respond_to do |format|
+        format.html {redirect_to "/chats/shubham"}
+        format.json{ render :json => @message }
+        format.js {render :'messages/upload_attachment'}
+      end
     end
   end
 
@@ -75,4 +96,12 @@ class MessagesController < ApplicationController
     def message_params
       params.require(:message).permit(:friend_id, :message)
     end
+
+   def broadcast_data
+     messages = Message.where(:friend_id=>@friend.id,:read=>false,:user_id=>@message.partner_id)
+     messages.update(:read=>true)
+     FriendChannel.broadcast_to @friend, @message
+     user = (@friend.user_1_id==current_user.id)? User.find(@friend.user_2_id) : User.find(@friend.user_1_id)
+     AppearanceChannel.broadcast_to user,{user_id: current_user.id,notification_count: Message.where(:friend_id=>@friend.id,:read=>false,:user_id=>current_user.id).count}
+   end
 end
