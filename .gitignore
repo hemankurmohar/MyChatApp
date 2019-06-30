@@ -27,3 +27,4 @@
 /config/master.key
 /public/uploads
 /config/aylien.yml
+/config/database.yml
