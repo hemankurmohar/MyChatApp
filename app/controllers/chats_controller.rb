@@ -19,7 +19,6 @@ class ChatsController < ApplicationController
       @friend_id = Friend.find_friend_user_id(current_user.id,user_id.id)
       if @friend_id
         @messages = Message.where(:friend_id => @friend_id)
-        #FriendChannel.broadcast_to Friend.find(@friend_id), @message
       else
         flash[:alert] = "Currently you are not friend of #{@username}."
         redirect_to chat_index_path
@@ -40,7 +39,7 @@ class ChatsController < ApplicationController
     end
     @f_name_map = User.where(:id=>@friends_user_id).map{|x| [x.id,x.username]}.to_h
     @f_uname_map = User.where(:id=>@friends_user_id).map{|x| [x.id,x.username]}.to_h
-
+    @notifications = Message.where(:friend_id => friends,:read=>false)
   end
 
   def online_friends

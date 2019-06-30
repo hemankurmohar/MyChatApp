@@ -33,15 +33,8 @@ class MessagesController < ApplicationController
     respond_to do |format|
       if @message.save
         @hide_user_id = @friend.partner_id(current_user.id)
-        #messages = Message.where(:friend_id=>@friend.id,:read=>false,:user_id=>@message.partner_id)
-        #messages.update(:read=>true)
         format.json { render :show, status: :created, location: @message }
         format.js {render :'messages/create'}
-        # FriendChannel.broadcast_to @friend, @message
-        # user = (@friend.user_1_id==current_user.id)? User.find(@friend.user_2_id) : User.find(@friend.user_1_id)
-        # @hide_user_id = user.id
-        # AppearanceChannel.broadcast_to user,{user_id: current_user.id,notification_count: Message.where(:friend_id=>@friend.id,:read=>false,:user_id=>current_user.id).count}
-
       else
         format.html { render :new }
         format.json { render json: @message.errors, status: :unprocessable_entity }
@@ -86,8 +79,6 @@ class MessagesController < ApplicationController
       @hide_user_id = @friend.partner_id(current_user.id)
       @message.update(:attachment_content_type=>@message.file_name.content_type)
       respond_to do |format|
-        #FriendChannel.broadcast_to @friend, @message
-       # AppearanceChannel.broadcast_to user,{user_id: current_user.id,notification_count: Message.where(:friend_id=>@friend.id,:read=>false,:user_id=>current_user.id).count}
         format.html {redirect_to "/chats/shubham"}
         format.json{ render :json => @message }
         format.js {render :'messages/upload_attachment'}

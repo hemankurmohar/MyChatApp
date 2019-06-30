@@ -18,7 +18,8 @@
                <img src="https://ptetutorials.com/images/user-profile.png" class="avatar" alt="">
              </div>
              <%= @f_name_map[friend] %>
-             <span class="badge badge-primary" id="notification_<%= friend %>"></span>
+             <% notification_count = @notifications.select{|x| x.user_id==friend}.count %>
+             <span class="badge badge-primary" id="notification_<%= friend %>"><%= (notification_count!=0)? notification_count : ""%></span>
              <span class="badge badge-<%= (@online_users.include?(friend))? "success" :"light" %>" id="status_<%= friend %>"><%= (@online_users.include?(friend))? "Online" :"Offline" %></span>
 
            </li>
